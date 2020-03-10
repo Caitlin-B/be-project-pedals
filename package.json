@@ -1,0 +1,29 @@
+{
+  "name": "be-project-pedals",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon listen.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Caitlin-B/be-project-pedals.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Caitlin-B/be-project-pedals/issues"
+  },
+  "homepage": "https://github.com/Caitlin-B/be-project-pedals#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.4",
+    "mongoose-geojson-schema": "^2.1.5",
+    "nodemon": "^2.0.2"
+  }
+}
