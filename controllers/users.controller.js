@@ -1,11 +1,22 @@
-const {addUser} = require('../models/users.model')
+const { addUser, fetchUser } = require("../models/users.model");
 
 exports.postUser = (req, res, next) => {
-  const {body} = req;
-  console.log('posting user controller')
+  const { body } = req;
 
-  addUser()
-  if(!body) {
-    return res.status(400).se
+  if (!body) {
+    console.log("no body");
+    return res.status(400);
   }
-}
+
+  addUser(body).then(user => {
+    res.status(201).send({ user });
+  });
+};
+
+exports.getUser = (req, res, next) => {
+  const { username } = req.params;
+
+  fetchUser(username).then(user => {
+    res.status(200).send({ user });
+  });
+};

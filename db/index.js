@@ -1,11 +1,12 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 mongoose
-  .connect('mongodb://127.0.0.1:27017/project-pedals', {
-    useNewUrlParser: true
+  .connect("mongodb://127.0.0.1:27017/project-pedals", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
   })
   .catch(e => {
-    console.error('connection error', e.message);
+    console.error("connection error", e.message);
   });
 
 const db = mongoose.connection;
