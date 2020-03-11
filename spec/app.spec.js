@@ -1,13 +1,14 @@
 const chai = require("chai");
 const { expect } = require("chai");
 const request = require("supertest");
-// const connection = require("../db");
 const app = require("../app");
 const samsChaiSorted = require("sams-chai-sorted");
+const mongoose = require("mongoose");
 
 chai.use(samsChaiSorted);
 
-// after(() => connection.destroy());
+// beforeEach(() => mongoose.seed.run());
+after(() => mongoose.disconnect());
 
 describe("/api", () => {
   describe("/routes", () => {
