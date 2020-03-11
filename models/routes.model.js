@@ -1,15 +1,15 @@
-const CycleRoute = require("../db/schemas/cycleRoutes.schema");
+const Route = require("../db/schemas/routes.schema");
 
 exports.addRoute = body => {
-  const cycleRoute = new CycleRoute(body);
+  const route = new Route(body);
 
-  return cycleRoute.save();
+  return route.save();
 };
 
 exports.fetchAllRoutes = () => {
-  return CycleRoute.find();
+  return Route.find();
 };
 
-exports.fetchRouteById = (route_id) => {
-  return CycleRoute.findOne({ _id: route_id });
-}
+exports.fetchRouteById = route_id => {
+  return Route.findOne({ _id: route_id });
+};

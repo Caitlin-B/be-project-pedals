@@ -1,18 +1,17 @@
 const { Seeder } = require("mongoose-data-seed");
-const cycleRoutes = require("../schemas/cycleRoutes.schema");
-
-const data = [{ features: [2, 3], user_id: "jessjelly" }];
+const routes = require("../schemas/routes.schema");
+const { data } = require("../data/routes");
 
 class RoutesSeeder extends Seeder {
   async shouldRun() {
-    return cycleRoutes
+    return routes
       .countDocuments()
       .exec()
       .then(count => count === 0);
   }
 
   async run() {
-    return cycleRoutes.create(data);
+    return routes.create(data);
   }
 }
 
