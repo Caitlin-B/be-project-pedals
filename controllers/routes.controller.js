@@ -1,4 +1,9 @@
-const { addRoute, fetchAllRoutes, fetchRouteById } = require("../models/routes.model");
+const {
+  addRoute,
+  fetchAllRoutes,
+  fetchRouteById,
+  removeRouteById
+} = require("../models/routes.model");
 
 exports.postRoute = (req, res, next) => {
   const { body } = req;
@@ -16,12 +21,19 @@ exports.getAllRoutes = (req, res, next) => {
   fetchAllRoutes().then(routes => {
     res.status(200).send({ routes });
   });
-}
+};
 
 exports.getRouteById = (req, res, next) => {
-  const {route_id} = req.params;
+  const { route_id } = req.params;
 
   fetchRouteById(route_id).then(route => {
-    res.status(200).send({route});
-  })
-}
+    res.status(200).send({ route });
+  });
+};
+
+exports.deleteRouteById = (req, res, next) => {
+  const { route_id } = req.params;
+  removeRouteById(route_id).then(() => {
+    console.log("deleted");
+  });
+};

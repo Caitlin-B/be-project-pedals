@@ -1,7 +1,10 @@
 exports.data = [
   {
-    title: "Jess' Route",
+    routeName: "Jess' Route",
     user_id: "jessjelly",
+    calculatedDistance: 4,
+    center: [2, 4],
+    zoom: [10],
     features: [
       {
         id: "939f91b44e6e9e02d291936b38d37d41",
@@ -39,8 +42,11 @@ exports.data = [
     ]
   },
   {
-    title: "Grumpy's Sunday Bike route",
+    routeName: "Grumpy's Sunday Bike route",
     user_id: "grumpy19",
+    calculatedDistance: 4,
+    center: [2, 4],
+    zoom: [10],
     features: [
       {
         id: "939f91b44e6e9e02d291936b38d37d41",

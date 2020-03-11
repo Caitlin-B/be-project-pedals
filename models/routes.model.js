@@ -10,6 +10,10 @@ exports.fetchAllRoutes = () => {
   return Route.find();
 };
 
-exports.fetchRouteById = route_id => {
-  return Route.findOne({ _id: route_id });
+exports.fetchRouteById = _id => {
+  return Route.findOne({ _id });
+};
+
+exports.removeRouteById = _id => {
+  return Route.deleteOne({ _id });
 };
