@@ -128,7 +128,7 @@ describe("/api", () => {
           .get("/api/routes?sort_by=srhdt")
           .expect(400)
           .then(({ body }) => {
-            expect(body).to.eql({msg: "Invalid Query Entry"})
+            expect(body).to.eql({ msg: "Invalid Query Entry" });
           });
       });
       it("GET: returns status 400 and and an error message, when the order query is invalid", () => {
@@ -207,6 +207,63 @@ describe("/api", () => {
             );
           });
       });
+      it("POST: returns status 406 and an error message if nothing is sent on the request body", () => {
+        return request(app)
+          .post("/api/routes")
+          .send({})
+          .expect(406)
+          .then(({ body }) => {
+            expect(body).to.eql({ msg: "Request Form Not Acceptable" });
+          });
+      });
+      it("POST: returns status 400 and an error message if any key is missing from the request body", () => {
+        const route = {
+          routeName: "steph's route",
+          user_id: "nickandsteph",
+          calculatedDistance: 100,
+          center: [2, 4],
+          zoom: [10],
+          type: "off road",
+          city: "manchester",
+          features: [
+            {
+              id: "939f91b44e6e9e02d291936b38d37d41",
+              type: "LineString",
+              properties: {},
+              geometry: {
+                coordinates: [
+                  [-2.243437194562347, 53.47937156671131],
+                  [-2.245279265879219, 53.48020470020762],
+                  [-2.244689803058094, 53.481037817344],
+                  [-2.2421109032150355, 53.48081857757853],
+                  [-2.242184586067509, 53.480380094648496],
+                  [-2.2416688060989145, 53.48011700271519]
+                ]
+              }
+            },
+            {
+              id: "d62ef1b6b3e5aea6bdc449c5fa083087",
+              type: "Feature",
+              properties: {},
+              geometry: {
+                coordinates: [-2.245278926116555, 53.48020142417977],
+                type: "Point"
+              }
+            },
+            {
+              id: "5758f5346eceea68c082b427b8f34d83",
+              type: "Feature",
+              properties: {},
+              geometry: {
+                coordinates: [-2.2448123582680353, 53.4810583735227],
+                type: "Point"
+              }
+            }
+          ]
+        };
+        
+        return request(app).post("/api/routes").send(route)
+      })
     });
 
     describe("/:route_id", () => {
@@ -359,7 +416,7 @@ describe("/api", () => {
                       .get(`/api/reviews/${route_id}/${review_id}`)
                       .expect(200)
                       .then(({ body: { review } }) => {
-                        console.log(review);
+                        // console.log(review);
                         expect(review).to.contain.keys(
                           "user_id",
                           "body",

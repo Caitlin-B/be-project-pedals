@@ -12,9 +12,11 @@ exports.postRoute = (req, res, next) => {
     console.log("no body"); //add Promise.reject
   }
 
-  addRoute(body).then(route => {
-    res.status(201).send({ route });
-  });
+  addRoute(body)
+    .then(route => {
+      res.status(201).send({ route });
+    })
+    .catch(next);
 };
 
 exports.getAllRoutes = (req, res, next) => {
