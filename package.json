@@ -1,0 +1,40 @@
+{
+  "name": "be-project-pedals",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "md-seed run --dropdb && mocha ./spec",
+    "start": "nodemon listen.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Caitlin-B/be-project-pedals.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Caitlin-B/be-project-pedals/issues"
+  },
+  "homepage": "https://github.com/Caitlin-B/be-project-pedals#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "command-line-commands": "^3.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.4",
+    "mongoose-data-seed": "^2.1.6",
+    "mongoose-geojson-schema": "^2.1.5",
+    "nodemon": "^2.0.2"
+  },
+  "mdSeed": {
+    "seedersFolder": "./db/seeds"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.0",
+    "sams-chai-sorted": "^1.0.2",
+    "supertest": "^4.0.2"
+  }
+}
