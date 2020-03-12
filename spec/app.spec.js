@@ -226,7 +226,44 @@ describe("/api", () => {
     });
   });
 
-  describe("/users", () => {});
+  describe("/users", () => {
+    describe("POST", () => {
+      it("POST: returns status 201 and the created user", () => {
+        const user = { _id: "tickle122", password: "myNewPassword" };
+
+        return request(app)
+          .post("/api/users")
+          .send(user)
+          .expect(201)
+          .then(({ body: { user } }) => {
+            expect(user).to.contain.keys("_id", "password", "savedRoutes");
+          });
+      });
+    });
+    describe("/:user_id", () => {
+      describe("GET", () => {
+        it("GET: returns status 200 and the requested user", () => {
+          return request(app)
+            .get("/api/users/jessjelly")
+            .expect(200)
+            .then(({ body: { user } }) => {
+              expect(user).to.contain.keys("_id", "password", "savedRoutes");
+              expect(user._id).to.eql("jessjelly");
+            });
+        });
+      });
+      describe("DELETE", () => {
+        it("DELETE: returns status 204 and no content", () => {
+          return request(app)
+            .delete(`/api/users/jessjelly`)
+            .expect(204)
+            .then(({ body }) => {
+              expect(body).to.eql({});
+            });
+        });
+      });
+    });
+  });
 
   describe("/reviews", () => {});
 });
