@@ -1,4 +1,4 @@
-exports.data = [
+exports.testData = [
   {
     routeName: "Jess' Route",
     user_id: "jessjelly",

@@ -3,8 +3,9 @@ const routes = require("./db/seeds/routes.seeder");
 const users = require("./db/seeds/users.seeder");
 const reviews = require("./db/seeds/reviews.seeder");
 
-const mongoURL =
-  process.env.MONGO_URL || "mongodb://127.0.0.1:27017/project-pedals";
+const ENV = process.env.NODE_ENV || "project-pedals";
+
+const mongoURL = process.env.MONGO_URL || `mongodb://127.0.0.1:27017/${ENV}`;
 
 /**
  * Seeders List

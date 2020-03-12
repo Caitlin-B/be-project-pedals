@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "md-seed run --dropdb && mocha ./spec",
+    "test": "NODE_ENV=test md-seed run --dropdb && mocha ./spec",
     "start": "nodemon listen.js"
   },
   "repository": {

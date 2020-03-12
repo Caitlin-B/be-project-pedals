@@ -19,9 +19,24 @@ exports.postRoute = (req, res, next) => {
 
 exports.getAllRoutes = (req, res, next) => {
   const { type, user, sort_by, order } = req.query;
-  fetchAllRoutes(type, user, sort_by, order).then(routes => {
-    res.status(200).send({ routes });
-  });
+
+  fetchAllRoutes(type, user, sort_by, order)
+    .then(routes => {
+      if (routes.length === 0) {
+        return Promise.reject({ status: 404, msg: "Query Not Found" });
+      }
+      if (
+        sort_by !== undefined &&
+        sort_by !== "posted" &&
+        sort_by !== "calculatedDistance" &&
+        sort_by !== "averageRating"
+      ) {
+        return Promise.reject({ status: 400, msg: "Invalid Query Entry" });
+      }
+
+      res.status(200).send({ routes });
+    })
+    .catch(next);
 };
 
 exports.getRouteById = (req, res, next) => {

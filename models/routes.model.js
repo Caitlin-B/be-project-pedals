@@ -6,12 +6,19 @@ exports.addRoute = body => {
   return route.save();
 };
 
-exports.fetchAllRoutes = (type, user_id, sort_by, order = "desc") => {
+exports.fetchAllRoutes = (
+  type,
+  user_id,
+  sort_by = "averageRating",
+  order = "desc"
+) => {
   const query = {};
   const sort = {};
+
   if (type) query.type = type;
   if (user_id) query.user_id = user_id;
   if (sort_by) sort[sort_by] = order;
+
   return Route.find(query).sort(sort);
 };
 

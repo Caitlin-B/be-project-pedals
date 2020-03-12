@@ -1,4 +1,4 @@
-exports.data = [
+exports.testData = [
   {
     _id: "jessjelly",
     password: "101112"
