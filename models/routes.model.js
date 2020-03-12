@@ -9,7 +9,6 @@ exports.addRoute = body => {
 exports.fetchAllRoutes = (type, user_id, sort_by, order = "desc") => {
   const query = {};
   const sort = {};
-  console.log(order);
   if (type) query.type = type;
   if (user_id) query.user_id = user_id;
   if (sort_by) sort[sort_by] = order;

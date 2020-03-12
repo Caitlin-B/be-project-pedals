@@ -1,4 +1,9 @@
-const { addReviewByRouteId } = require("../models/reviews.model");
+const {
+  addReviewByRouteId,
+  fetchReviewsByRouteId,
+  fetchReviewById,
+  removeReviewById
+} = require("../models/reviews.model");
 
 exports.postReviewByRouteId = (req, res, next) => {
   const { body } = req;
@@ -14,24 +19,25 @@ exports.postReviewByRouteId = (req, res, next) => {
   });
 };
 
-exports.getAllRoutes = (req, res, next) => {
-  const { type, user, sort_by, order } = req.query;
-  fetchAllRoutes(type, user, sort_by, order).then(routes => {
-    res.status(200).send({ routes });
+exports.getReviewsByRouteId = (req, res, next) => {
+  const { route_id } = req.params;
+
+  fetchReviewsByRouteId(route_id).then(reviews => {
+    res.status(200).send({ reviews });
   });
 };
 
-exports.getRouteById = (req, res, next) => {
-  const { route_id } = req.params;
+exports.getReviewById = (req, res, next) => {
+  const { review_id } = req.params;
 
-  fetchRouteById(route_id).then(route => {
-    res.status(200).send({ route });
+  fetchReviewById(review_id).then(review => {
+    res.status(200).send({ review });
   });
 };
 
-exports.deleteRouteById = (req, res, next) => {
-  const { route_id } = req.params;
-  removeRouteById(route_id).then(route => {
+exports.deleteReviewById = (req, res, next) => {
+  const { route_id, review_id } = req.params;
+  removeReviewById(review_id).then(review => {
     res.status(204).send();
   });
 };
