@@ -57,7 +57,7 @@ describe("/api", () => {
             expect(userIsJessJelly).to.be.true;
           });
       });
-      it("GET: returns status 200 and all routes sort by posted", () => {
+      it("GET: returns status 200 and all routes sorted by posted", () => {
         return request(app)
           .get("/api/routes?sort_by=posted")
           .expect(200)
@@ -67,7 +67,7 @@ describe("/api", () => {
             });
           });
       });
-      it("GET: returns status 200 and all routes sort by calculatedDistance", () => {
+      it("GET: returns status 200 and all routes sorted by calculatedDistance", () => {
         return request(app)
           .get("/api/routes?sort_by=calculatedDistance")
           .expect(200)
@@ -77,7 +77,7 @@ describe("/api", () => {
             });
           });
       });
-      it("GET: returns status 200 and all routes sort by calculatedDistance", () => {
+      it("GET: returns status 200 and all routes sorted by calculatedDistance", () => {
         return request(app)
           .get("/api/routes?sort_by=calculatedDistance")
           .expect(200)
@@ -105,6 +105,38 @@ describe("/api", () => {
             expect(routes).to.be.sortedBy("averageRating", {
               descending: false
             });
+          });
+      });
+      it("GET: returns status 404 and a message stating that the queried column does not exist, when the type is invalid", () => {
+        return request(app)
+          .get("/api/routes?type=banana")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body).to.eql({ msg: "Query Not Found" });
+          });
+      });
+      it("GET: returns status 404 and a message stating that the queried column does not exist, when the user is invalid", () => {
+        return request(app)
+          .get("/api/routes?user=4567")
+          .expect(404)
+          .then(({ body }) => {
+            expect(body).to.eql({ msg: "Query Not Found" });
+          });
+      });
+      it("GET: returns status 400 and an error message if the sort_by query is invalid", () => {
+        return request(app)
+          .get("/api/routes?sort_by=srhdt")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body).to.eql({msg: "Invalid Query Entry"})
+          });
+      });
+      it("GET: returns status 400 and and an error message, when the order query is invalid", () => {
+        return request(app)
+          .get("/api/routes?order=jdfegy")
+          .expect(400)
+          .then(({ body }) => {
+            expect(body).to.eql({ msg: "Invalid Sort Value" });
           });
       });
     });
