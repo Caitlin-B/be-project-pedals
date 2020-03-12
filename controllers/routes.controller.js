@@ -34,7 +34,7 @@ exports.getRouteById = (req, res, next) => {
 
 exports.deleteRouteById = (req, res, next) => {
   const { route_id } = req.params;
-  removeRouteById(route_id).then(() => {
-    console.log("deleted");
+  removeRouteById(route_id).then(route => {
+    res.status(204).send();
   });
 };

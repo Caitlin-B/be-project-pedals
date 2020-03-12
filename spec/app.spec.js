@@ -178,7 +178,50 @@ describe("/api", () => {
 
     describe("/:route_id", () => {
       describe("GET", () => {
-        it("GET: returns status 200", () => {});
+        it("GET: returns status 200 and the requested route", () => {
+          return request(app)
+            .get("/api/routes")
+
+            .then(({ body }) => {
+              const id = body.routes[0]._id;
+
+              return request(app)
+                .get(`/api/routes/${id}`)
+                .expect(200)
+                .then(({ body }) => {
+                  expect(body).to.have.key("route");
+                  expect(body.route._id).to.eql(id);
+                  expect(body.route).to.contain.keys(
+                    "features",
+                    "center",
+                    "zoom",
+                    "_id",
+                    "routeName",
+                    "user_id",
+                    "calculatedDistance",
+                    "posted",
+                    "type",
+                    "city",
+                    "averageRating"
+                  );
+                });
+            });
+        });
+      });
+      describe("DELETE", () => {
+        it("DELETE: returns status 204 and no content", () => {
+          return request(app)
+            .get("/api/routes")
+            .then(({ body }) => {
+              const id = body.routes[0]._id;
+              return request(app)
+                .delete(`/api/routes/${id}`)
+                .expect(204)
+                .then(({ body }) => {
+                  expect(body).to.eql({});
+                });
+            });
+        });
       });
     });
   });
