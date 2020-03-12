@@ -1,4 +1,4 @@
-exports.data = [
+exports.devData = [
   {
     user_id: "jessjelly",
     body: "I like this route",

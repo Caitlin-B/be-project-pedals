@@ -1,3 +1,4 @@
+process.env.NODE_ENV = "test";
 const chai = require("chai");
 const { expect } = require("chai");
 const request = require("supertest");
@@ -18,6 +19,7 @@ describe("/api", () => {
           .get("/api/routes")
           .expect(200)
           .then(({ body }) => {
+            console.log(body);
             expect(body).to.have.key("routes");
             expect(body.routes[0]).to.contain.keys(
               "features",

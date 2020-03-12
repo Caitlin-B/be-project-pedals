@@ -1,4 +1,4 @@
-exports.data = [
+exports.devData = [
   {
     routeName: "Jess' Route",
     user_id: "jessjelly",

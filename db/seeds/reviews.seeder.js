@@ -1,6 +1,9 @@
+const ENV = process.env.NODE_ENV || "dev";
 const { Seeder } = require("mongoose-data-seed");
 const reviews = require("../schemas/reviews.schema");
-const { data } = require("../data/reviews");
+const { reviewsData } = require("../data");
+
+const data = reviewsData[`${ENV}Data`];
 
 class ReviewsSeeder extends Seeder {
   async shouldRun() {
