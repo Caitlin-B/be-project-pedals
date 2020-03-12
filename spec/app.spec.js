@@ -298,5 +298,81 @@ describe("/api", () => {
     });
   });
 
-  describe("/reviews", () => {});
+  describe("/reviews", () => {
+    describe("/:route_id", () => {
+      describe("GET", () => {
+        it("GET: returns status 200 and a list of all the reviews for a specific route", () => {
+          return request(app)
+            .get("/api/reviews/5e68ffe0901eab60c9eeca40")
+            .expect(200)
+            .then(({ body: { reviews } }) => {
+              const reviewsFromSameRoute = reviews.every(review => {
+                return review.route_id === "5e68ffe0901eab60c9eeca40";
+              });
+              expect(reviewsFromSameRoute).to.be.true;
+            });
+        });
+      });
+
+      describe("POST", () => {
+        it("POST: returns status 201 and the posted review", () => {
+          const review = { body: "cheese", user_id: "jessjelly", rating: 3 };
+          return request(app)
+            .get("/api/routes")
+            .then(({ body }) => {
+              const id = body.routes[0]._id;
+              return request(app)
+                .post(`/api/reviews/${id}`)
+                .send(review)
+                .expect(201)
+                .then(({ body: { review } }) => {
+                  expect(review).to.contain.keys(
+                    "user_id",
+                    "body",
+                    "rating",
+                    "posted",
+                    "route_id"
+                  );
+                });
+            });
+        });
+      });
+
+      describe("/:review_id", () => {
+        describe("GET", () => {
+          it("GET: returns status 200 and the specific route", () => {
+            return request(app)
+              .get("/api/routes")
+              .then(({ body }) => {
+                const route_id = body.routes[1]._id;
+                const review = {
+                  body: "jimmyjellywelly",
+                  user_id: "jessjelly",
+                  rating: 5
+                };
+                return request(app)
+                  .post(`/api/reviews/${route_id}`)
+                  .send(review)
+                  .then(({ body: { review } }) => {
+                    const review_id = review._id;
+                    return request(app)
+                      .get(`/api/reviews/${route_id}/${review_id}`)
+                      .expect(200)
+                      .then(({ body: { review } }) => {
+                        console.log(review);
+                        expect(review).to.contain.keys(
+                          "user_id",
+                          "body",
+                          "rating",
+                          "posted",
+                          "route_id"
+                        );
+                      });
+                  });
+              });
+          });
+        });
+      });
+    });
+  });
 });

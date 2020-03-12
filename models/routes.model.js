@@ -14,7 +14,7 @@ exports.fetchAllRoutes = (
 ) => {
   const query = {};
   const sort = {};
- 
+
   if (type) query.type = type;
   if (user_id) query.user_id = user_id;
   if (sort_by) sort[sort_by] = order;
