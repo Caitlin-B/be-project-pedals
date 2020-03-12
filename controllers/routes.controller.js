@@ -18,7 +18,8 @@ exports.postRoute = (req, res, next) => {
 };
 
 exports.getAllRoutes = (req, res, next) => {
-  fetchAllRoutes().then(routes => {
+  const { type, user, sort_by, order } = req.query;
+  fetchAllRoutes(type, user, sort_by, order).then(routes => {
     res.status(200).send({ routes });
   });
 };

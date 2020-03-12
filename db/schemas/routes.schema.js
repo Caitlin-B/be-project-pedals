@@ -9,7 +9,10 @@ const Route = new mongoose.Schema({
   posted: { type: Date, default: Date.now },
   calculatedDistance: { type: Number, required: true },
   center: { type: Array, required: true },
-  zoom: { type: Array, required: true }
+  zoom: { type: Array, required: true },
+  // elevation: {type:}
+  city: { type: String, required: true },
+  averageRating: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model("routes", Route);
