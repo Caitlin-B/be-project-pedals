@@ -275,10 +275,16 @@ describe("/api", () => {
               .get("/api/routes")
               .then(({ body }) => {
                 const route_id = body.routes[1]._id;
+                const review = {
+                  body: "jimmyjellywelly",
+                  user_id: "jessjelly",
+                  rating: 5
+                };
                 return request(app)
-                  .get(`/api/reviews/${route_id}`)
-                  .then(({ body: { reviews } }) => {
-                    const review_id = reviews[0]._id;
+                  .post(`/api/reviews/${route_id}`)
+                  .send(review)
+                  .then(({ body: { review } }) => {
+                    const review_id = review._id;
                     return request(app)
                       .get(`/api/reviews/${route_id}/${review_id}`)
                       .expect(200)
