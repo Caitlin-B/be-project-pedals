@@ -1,11 +1,11 @@
 const ENV = process.env.NODE_ENV || "project-pedals";
 
-const mongoURL = process.env.MONGODB_URL || `mongodb://127.0.0.1:27017/${ENV}`;
+const mongoURI = process.env.MONGODB_URI || `mongodb://127.0.0.1:27017/${ENV}`;
 
 const mongoose = require("mongoose");
 
 mongoose
-  .connect(mongoURL, {
+  .connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
