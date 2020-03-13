@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test md-seed run --dropdb && mocha ./spec",
-    "start": "nodemon listen.js"
+    "start": "node listen.js"
   },
   "repository": {
     "type": "git",
