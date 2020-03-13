@@ -1,4 +1,4 @@
-exports.testData = [
+module.exports = [
   {
     user_id: "jessjelly",
     body: "I like this route",
