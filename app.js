@@ -6,7 +6,9 @@ const apiRouter = require("./routers/api.router");
 const {
   handleCustomError,
   typeErrorHandler,
-  validationErrorHandler
+  validationErrorHandler,
+  castErrorHandler, 
+  handleServerError
 } = require("./errors/index");
 
 app.use(express.json());
@@ -19,7 +21,10 @@ app.use("/api", apiRouter);
 
 app.use(typeErrorHandler);
 app.use(validationErrorHandler);
+app.use(castErrorHandler);
 app.use(handleCustomError);
+app.use(handleServerError);
+
 
 db.on("error", console.error.bind(console, "MongoDB connection error: "));
 
