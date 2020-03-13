@@ -8,13 +8,15 @@ const {
 exports.postRoute = (req, res, next) => {
   const { body } = req;
 
-  if (!body) {
-    console.log("no body"); //add Promise.reject
-  }
+  // if (!body) {
+  //   console.log("no body"); //add Promise.reject
+  // }
 
-  addRoute(body).then(route => {
-    res.status(201).send({ route });
-  });
+  addRoute(body)
+    .then(route => {
+      res.status(201).send({ route });
+    })
+    .catch(next);
 };
 
 exports.getAllRoutes = (req, res, next) => {
@@ -42,14 +44,18 @@ exports.getAllRoutes = (req, res, next) => {
 exports.getRouteById = (req, res, next) => {
   const { route_id } = req.params;
 
-  fetchRouteById(route_id).then(route => {
-    res.status(200).send({ route });
-  });
+  fetchRouteById(route_id)
+    .then(route => {
+      res.status(200).send({ route });
+    })
+    .catch(next);
 };
 
 exports.deleteRouteById = (req, res, next) => {
   const { route_id } = req.params;
-  removeRouteById(route_id).then(route => {
-    res.status(204).send();
-  });
+  removeRouteById(route_id)
+    .then(route => {
+      res.status(204).send();
+    })
+    .catch(next);
 };

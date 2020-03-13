@@ -128,7 +128,7 @@ describe("/api", () => {
           .get("/api/routes?sort_by=srhdt")
           .expect(400)
           .then(({ body }) => {
-            expect(body).to.eql({msg: "Invalid Query Entry"})
+            expect(body).to.eql({ msg: "Invalid Query Entry" });
           });
       });
       it("GET: returns status 400 and and an error message, when the order query is invalid", () => {
@@ -207,6 +207,69 @@ describe("/api", () => {
             );
           });
       });
+      it("POST: returns status 406 and an error message if nothing is sent on the request body", () => {
+        return request(app)
+          .post("/api/routes")
+          .send({})
+          .expect(406)
+          .then(({ body }) => {
+            expect(body).to.eql({ msg: "Request Data Validation Failed" });
+          });
+      });
+      it("POST: returns status 406 and an error message if any key is missing from the request body", () => {
+        const route = {
+          routeName: "steph's route",
+          calculatedDistance: 100,
+          center: [2, 4],
+          zoom: [10],
+          type: "off road",
+          city: "manchester",
+          averageRating: 4,
+          features: [
+            {
+              id: "939f91b44e6e9e02d291936b38d37d41",
+              type: "LineString",
+              properties: {},
+              geometry: {
+                coordinates: [
+                  [-2.243437194562347, 53.47937156671131],
+                  [-2.245279265879219, 53.48020470020762],
+                  [-2.244689803058094, 53.481037817344],
+                  [-2.2421109032150355, 53.48081857757853],
+                  [-2.242184586067509, 53.480380094648496],
+                  [-2.2416688060989145, 53.48011700271519]
+                ]
+              }
+            },
+            {
+              id: "d62ef1b6b3e5aea6bdc449c5fa083087",
+              type: "Feature",
+              properties: {},
+              geometry: {
+                coordinates: [-2.245278926116555, 53.48020142417977],
+                type: "Point"
+              }
+            },
+            {
+              id: "5758f5346eceea68c082b427b8f34d83",
+              type: "Feature",
+              properties: {},
+              geometry: {
+                coordinates: [-2.2448123582680353, 53.4810583735227],
+                type: "Point"
+              }
+            }
+          ]
+        };
+
+        return request(app)
+          .post("/api/routes")
+          .send(route)
+          .expect(406)
+          .then(({ body }) => {
+            expect(body).to.eql({ msg: "Request Data Validation Failed" });
+          });
+      });
     });
 
     describe("/:route_id", () => {
@@ -240,6 +303,14 @@ describe("/api", () => {
                 });
             });
         });
+        it("GET: returns status 404 and an error message if the requested route does not exist", () => {
+          return request(app)
+            .get("/api/routes/bananasinpyjamas")
+            .expect(404)
+            .then(({ body }) => {
+              expect(body).to.eql({ msg: "Requested Data Not Found" });
+            });
+        });
       });
       describe("DELETE", () => {
         it("DELETE: returns status 204 and no content", () => {
@@ -255,6 +326,14 @@ describe("/api", () => {
                 });
             });
         });
+        it("DELETE: returns status 404 and an error message when the route requested to be deleted does not exist", () => {
+          return request(app)
+            .delete("/api/routes/notaroute")
+            .expect(404)
+            .then(({ body }) => {
+              expect(body).to.eql({ msg: "Requested Data Not Found" });
+            });
+        });
       });
     });
   });
@@ -263,13 +342,31 @@ describe("/api", () => {
     describe("POST", () => {
       it("POST: returns status 201 and the created user", () => {
         const user = { _id: "tickle122", password: "myNewPassword" };
-
         return request(app)
           .post("/api/users")
           .send(user)
           .expect(201)
           .then(({ body: { user } }) => {
             expect(user).to.contain.keys("_id", "password", "savedRoutes");
+          });
+      });
+      it("POST: returns status 406 and an error message if nothing is sent on the request body", () => {
+        return request(app)
+          .post("/api/users")
+          .send({})
+          .expect(406)
+          .then(({ body }) => {
+            expect(body).to.eql({ msg: "Request Data Validation Failed" });
+          });
+      });
+      it("POST: returns status 406 and an error message if required data is missing from the request body", () => {
+        const user = { _id: "tickle122" };
+        return request(app)
+          .post("/api/users")
+          .send(user)
+          .expect(406)
+          .then(({ body }) => {
+            expect(body).to.eql({ msg: "Request Data Validation Failed" });
           });
       });
     });
@@ -284,6 +381,14 @@ describe("/api", () => {
               expect(user._id).to.eql("jessjelly");
             });
         });
+        it("GET: returns status 404 and an error message when the requested user does not exist ", () => {
+          return request(app)
+            .get("/api/users/2475869")
+            .expect(404)
+            .then(({ body }) => {
+              expect(body).to.eql({ msg: "Requested User Not Found" });
+            });
+        });
       });
       describe("DELETE", () => {
         it("DELETE: returns status 204 and no content", () => {
@@ -292,6 +397,14 @@ describe("/api", () => {
             .expect(204)
             .then(({ body }) => {
               expect(body).to.eql({});
+            });
+        });
+        it("DELETE: returns status 404 and an error message when the route requested to be deleted does not exist", () => {
+          return request(app)
+            .delete("/api/users/notauser")
+            .expect(404)
+            .then(({ body }) => {
+              expect(body).to.eql({ msg: "Delete Failed - User Not Found" });
             });
         });
       });
@@ -312,11 +425,23 @@ describe("/api", () => {
               expect(reviewsFromSameRoute).to.be.true;
             });
         });
+        it("GET: returns status 404 and an error message when the requested route does not exist", () => {
+          return request(app)
+            .get("/api/reviews/notaroute")
+            .expect(404)
+            .then(({ body }) => {
+              expect(body).to.eql({ msg: "Reviews Not Found" });
+            });
+        });
       });
 
       describe("POST", () => {
         it("POST: returns status 201 and the posted review", () => {
-          const review = { body: "cheese", user_id: "jessjelly", rating: 3 };
+          const review = {
+            body: "Great route!",
+            user_id: "jessjelly",
+            rating: 5
+          };
           return request(app)
             .get("/api/routes")
             .then(({ body }) => {
@@ -334,6 +459,29 @@ describe("/api", () => {
                     "route_id"
                   );
                 });
+            });
+        });
+        it("POST: returns status 406 and an error message if nothing is sent on the request body", () => {
+          return request(app)
+            .get("/api/routes")
+            .then(({ body }) => {
+              const id = body.routes[0]._id;
+              return request(app)
+                .post(`/api/reviews/${id}`)
+                .send({})
+                .expect(406);
+            });
+        });
+        it("POST: returns status 406 and an error message if a key is missing from the request body", () => {
+          const review = { body: "This route was OK...", rating: 3 };
+          return request(app)
+            .get("/api/routes")
+            .then(({ body }) => {
+              const id = body.routes[0]._id;
+              return request(app)
+                .post(`/api/reviews/${id}`)
+                .send(review)
+                .expect(406);
             });
         });
       });
@@ -359,7 +507,6 @@ describe("/api", () => {
                       .get(`/api/reviews/${route_id}/${review_id}`)
                       .expect(200)
                       .then(({ body: { review } }) => {
-                        console.log(review);
                         expect(review).to.contain.keys(
                           "user_id",
                           "body",
@@ -371,6 +518,22 @@ describe("/api", () => {
                   });
               });
           });
+        });
+        describe("DELETE", () => {
+          //need to test it works
+          // it("DELETE: returns returns status 404 and an error message when the route requested to be deleted does not exist", () => {
+          //   return request(app)
+          //     .get("/api/routes")
+          //     .then(({ body }) => {
+          //       const route_id = body.routes[1]._id;
+          //       return request(app)
+          //         .delete(`/api/reviews/${route_id}/banana`)
+          //         .expect(404)
+          //         .then(body => {
+          //           expect(body).to.eql({ msg: "hello" });
+          //         });
+          //     });
+          // });
         });
       });
     });
