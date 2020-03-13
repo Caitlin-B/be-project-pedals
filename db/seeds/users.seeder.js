@@ -4,9 +4,7 @@ const users = require("../schemas/users.schema");
 const { usersData } = require("../data");
 const { formatUsers } = require("../utils");
 
-
-const data = formatUsers(usersData[`${ENV}Data`]);
-
+const data = formatUsers(usersData);
 
 class UsersSeeder extends Seeder {
   async shouldRun() {
@@ -17,7 +15,7 @@ class UsersSeeder extends Seeder {
   }
 
   async run() {
-    return users.create(usersData);
+    return users.create(data);
   }
 }
 
