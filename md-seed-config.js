@@ -5,7 +5,7 @@ const reviews = require("./db/seeds/reviews.seeder");
 
 const ENV = process.env.NODE_ENV || "project-pedals";
 
-const mongoURL = process.env.MONGO_URL || `mongodb://127.0.0.1:27017/${ENV}`;
+const mongoURL = process.env.MONGODB_URL || `mongodb://127.0.0.1:27017/${ENV}`;
 
 /**
  * Seeders List
