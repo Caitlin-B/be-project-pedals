@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const db = require("./db");
+const db = require("/Users/caitlinbishop/Desktop/Coding/project/project-pedals/be-project-pedals/db/index");
 const apiRouter = require("./routers/api.router");
 const { handleCustomError, typeErrorHandler } = require("./errors/index");
 
