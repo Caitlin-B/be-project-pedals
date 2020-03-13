@@ -5,7 +5,7 @@ const reviews = require("./db/seeds/reviews.seeder");
 
 const ENV = process.env.NODE_ENV || "project-pedals";
 
-const mongoURL = process.env.MONGODB_URL || `mongodb://127.0.0.1:27017/${ENV}`;
+const mongoURI = process.env.MONGODB_URI || `mongodb://127.0.0.1:27017/${ENV}`;
 
 /**
  * Seeders List
@@ -18,7 +18,7 @@ exports.seedersList = { routes, users, reviews };
  * @return {Promise}
  */
 exports.connect = async () =>
-  await mongoose.connect(mongoURL, { useNewUrlParser: true });
+  await mongoose.connect(mongoURI, { useNewUrlParser: true });
 /**
  * Drop/Clear the database implementation
  * @return {Promise}
