@@ -6,10 +6,11 @@ const {
   deleteRouteById
 } = require("../controllers/routes.controller");
 const { send405Error } = require("../errors/index");
+const {validateToken} = require('../controllers/authorisation.controller')
 
 routesRouter
   .route("/")
-  .post(postRoute)
+  .post(validateToken, postRoute)
   .get(getAllRoutes)
   .all(send405Error);;
 
