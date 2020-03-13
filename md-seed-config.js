@@ -1,3 +1,4 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
 const routes = require("./db/seeds/routes.seeder");
 const users = require("./db/seeds/users.seeder");

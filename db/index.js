@@ -8,6 +8,8 @@ const DB_URL = {
 
 const mongoURI = DB_URL[ENV];
 
+console.log(mongoURI, "hiuhfjosrhfnoerng");
+
 const mongoose = require("mongoose");
 
 mongoose
