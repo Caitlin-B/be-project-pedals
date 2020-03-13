@@ -1,4 +1,4 @@
-exports.testData = [
+module.exports = [
   {
     _id: "jessjelly",
     password: "101112"

@@ -3,9 +3,15 @@ const routes = require("./db/seeds/routes.seeder");
 const users = require("./db/seeds/users.seeder");
 const reviews = require("./db/seeds/reviews.seeder");
 
-const ENV = process.env.NODE_ENV || "project-pedals";
+const ENV = process.env.NODE_ENV || "development";
 
-const mongoURI = process.env.MONGODB_URI || `mongodb://127.0.0.1:27017/${ENV}`;
+const DB_URL = {
+  production: process.env.MONGODB_URI,
+  development: "mongodb://127.0.0.1:27017/project-pedals",
+  test: `mongodb://127.0.0.1:27017/test`
+};
+
+const mongoURI = DB_URL[ENV];
 
 /**
  * Seeders List
