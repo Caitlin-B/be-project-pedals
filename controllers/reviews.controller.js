@@ -47,7 +47,7 @@ exports.getReviewById = (req, res, next) => {
 exports.deleteReviewById = (req, res, next) => {
   const { route_id, review_id } = req.params;
   removeReviewById(review_id)
-    .then(review => {
+    .then(() => {
       res.status(204).send();
     })
     .catch(next);
