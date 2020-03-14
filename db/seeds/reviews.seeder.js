@@ -3,8 +3,6 @@ const { Seeder } = require("mongoose-data-seed");
 const reviews = require("../schemas/reviews.schema");
 const { reviewsData } = require("../data");
 
-// const data = reviewsData[`${ENV}Data`];
-
 class ReviewsSeeder extends Seeder {
   async shouldRun() {
     return reviews
