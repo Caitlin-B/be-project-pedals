@@ -12,7 +12,8 @@ const Route = new mongoose.Schema({
   zoom: { type: Array, required: true },
   // elevation: {type:}
   city: { type: String, required: true },
-  averageRating: { type: Number, default: 0 }
+  averageRating: { type: Number, default: 0 },
+  routeDescription: { type: String, required: true }
 });
 
 module.exports = mongoose.model("routes", Route);

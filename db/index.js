@@ -13,7 +13,8 @@ const mongoose = require("mongoose");
 mongoose
   .connect(mongoURI, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
   })
   .catch(e => {
     console.error("connection error", e.message);

@@ -8,10 +8,6 @@ const {
 exports.postRoute = (req, res, next) => {
   const { body } = req;
 
-  // if (!body) {
-  //   console.log("no body"); //add Promise.reject
-  // }
-
   addRoute(body)
     .then(route => {
       res.status(201).send({ route });

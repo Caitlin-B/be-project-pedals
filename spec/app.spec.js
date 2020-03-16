@@ -92,7 +92,8 @@ describe("/api", () => {
               "posted",
               "type",
               "city",
-              "averageRating"
+              "averageRating",
+              "routeDescription"
             );
           });
       });
@@ -207,6 +208,7 @@ describe("/api", () => {
         const route = {
           routeName: "steph's route",
           user_id: "nickandsteph",
+          routeDescription: "A route for experience off-road cyclists, which I'd highly recommend.",
           calculatedDistance: 100,
           center: [2, 4],
           zoom: [10],
@@ -264,7 +266,8 @@ describe("/api", () => {
               "posted",
               "type",
               "city",
-              "averageRating"
+              "averageRating",
+              "routeDescription"
             );
           });
       });
@@ -280,6 +283,7 @@ describe("/api", () => {
       it("POST: returns status 406 and an error message if any key is missing from the request body", () => {
         const route = {
           routeName: "steph's route",
+          routeDescription: 'A new route for off-roaders.',
           calculatedDistance: 100,
           center: [2, 4],
           zoom: [10],
@@ -353,7 +357,8 @@ describe("/api", () => {
                 "posted",
                 "type",
                 "city",
-                "averageRating"
+                "averageRating",
+                "routeDescription"
               );
             });
         });
@@ -436,6 +441,26 @@ describe("/api", () => {
             .expect(404)
             .then(({ body }) => {
               expect(body).to.eql({ msg: "Requested User Not Found" });
+            });
+        });
+      });
+      describe("PATCH", () => {
+        it("PATCH: returns status 200 and will update the saved routes property on the user, to include the patched route_id", () => {
+          return request
+            .patch("/api/users/jessjelly")
+            .send({ savedRoute: route_id })
+            .expect(200)
+            .then(({ body }) => {
+              expect(body.user.savedRoutes[0]).to.eql(route_id);
+            });
+        });
+        it("PATCH: returns status 400 and an error message if savedRoute is not included on the request body", () => {
+          return request
+            .patch("/api/users/jessjelly")
+            .send({})
+            .expect(400)
+            .then(({ body }) => {
+              expect(body).to.eql({ msg: "Invalid Request Body" });
             });
         });
       });
