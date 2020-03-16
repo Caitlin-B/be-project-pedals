@@ -1,6 +1,6 @@
 const usersRouter = require('express').Router();
 
-const {postUser, getUser, deleteUser} = require('../controllers/users.controller');
+const {postUser, getUser, deleteUser, patchUserSavedRoutes} = require('../controllers/users.controller');
 const { send405Error } = require("../errors/index");
 
 usersRouter
@@ -12,7 +12,8 @@ usersRouter
   .route("/:username")
   .get(getUser)
   .delete(deleteUser)
-  .all(send405Error);;
+  .patch(patchUserSavedRoutes)
+  .all(send405Error);
 
 module.exports = usersRouter;
 

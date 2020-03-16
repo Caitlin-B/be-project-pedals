@@ -2,6 +2,8 @@ module.exports = [
   {
     routeName: "Jess' Route",
     user_id: "jessjelly",
+    routeDescription:
+      "This is a great scenic route, perfect for a leisurely weekend bike ride!",
     calculatedDistance: 6,
     center: [2, 4],
     zoom: [10],
@@ -47,6 +49,7 @@ module.exports = [
   {
     routeName: "Jess' second Route",
     user_id: "jessjelly",
+    routeDescription: "A lovely family-friendly route for everyone to enjoy!",
     calculatedDistance: 2,
     center: [2, 4],
     zoom: [10],
@@ -92,6 +95,7 @@ module.exports = [
   {
     routeName: "Jess' third Route",
     user_id: "jessjelly",
+    routeDescription: "A lovely family route, one for everyone to enjoy.",
     calculatedDistance: 6,
     center: [2, 4],
     zoom: [10],
