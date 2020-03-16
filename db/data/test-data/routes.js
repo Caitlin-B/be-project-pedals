@@ -2,6 +2,8 @@ module.exports = [
   {
     routeName: "Jess' Route",
     user_id: "jessjelly",
+    routeDescription:
+      "This is a great scenic route, perfect for a leisurely weekend bike ride!",
     calculatedDistance: 6,
     center: [2, 4],
     zoom: [10],
@@ -47,6 +49,7 @@ module.exports = [
   {
     routeName: "Jess' second Route",
     user_id: "jessjelly",
+    routeDescription: "A lovely family route, one for everyone to enjoy.",
     calculatedDistance: 2,
     center: [2, 4],
     zoom: [10],
@@ -92,6 +95,8 @@ module.exports = [
   {
     routeName: "Grumpy's Sunday Bike route",
     user_id: "grumpy19",
+    routeDescription:
+      "This is a great scenic route, perfect for a leisurely weekend bike ride!",
     calculatedDistance: 4,
     center: [2, 4],
     zoom: [10],
@@ -137,6 +142,8 @@ module.exports = [
   {
     routeName: "Jess' third Route",
     user_id: "jessjelly",
+    routeDescription:
+      "This is a great scenic route, perfect for a leisurely weekend bike ride!",
     calculatedDistance: 4,
     center: [2, 4],
     zoom: [10],
@@ -182,6 +189,8 @@ module.exports = [
   {
     routeName: "Jess' fourth Route",
     user_id: "jessjelly",
+    routeDescription:
+      "This is a great scenic route, perfect for a leisurely weekend bike ride!",
     calculatedDistance: 4,
     center: [2, 4],
     zoom: [10],
@@ -227,6 +236,8 @@ module.exports = [
   {
     routeName: "Grumpy's cheesey route",
     user_id: "grumpy19",
+    routeDescription:
+      "This is a great scenic route, perfect for a leisurely weekend bike ride!",
     calculatedDistance: 4,
     center: [2, 4],
     zoom: [10],
@@ -272,6 +283,8 @@ module.exports = [
   {
     routeName: "tickle time",
     user_id: "tickle122",
+    routeDescription:
+      "This is a great scenic route, perfect for a leisurely weekend bike ride!",
     calculatedDistance: 4,
     center: [2, 4],
     zoom: [10],
@@ -317,6 +330,8 @@ module.exports = [
   {
     routeName: "tickle ftw",
     user_id: "tickle122",
+    routeDescription:
+      "This is a great scenic route, perfect for a leisurely weekend bike ride!",
     calculatedDistance: 4,
     center: [2, 4],
     zoom: [10],

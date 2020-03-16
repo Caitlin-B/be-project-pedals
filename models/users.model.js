@@ -13,3 +13,11 @@ exports.fetchUser = username => {
 exports.removeUser = username => {
   return User.deleteOne({ _id: username });
 };
+
+exports.addSavedRouteToUser = (username, savedRoute) => {
+  return User.findOneAndUpdate(
+    { _id: username },
+    { $push: { savedRoutes: savedRoute } },
+    { new: true }
+  );
+};
