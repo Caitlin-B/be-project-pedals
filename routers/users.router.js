@@ -6,7 +6,7 @@ const { send405Error } = require("../errors/index");
 usersRouter
   .route("/")
   .post(postUser)
-  .all(send405Error);;
+  .all(send405Error);
 
 usersRouter
   .route("/:username")
