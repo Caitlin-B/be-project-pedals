@@ -3,8 +3,6 @@ const { Seeder } = require("mongoose-data-seed");
 const routes = require("../schemas/routes.schema");
 const { routesData } = require("../data");
 
-// const data = routesData[`${ENV}Data`];
-
 class RoutesSeeder extends Seeder {
   async shouldRun() {
     return routes
