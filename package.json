@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test md-seed run --dropdb && mocha ./spec",
-    "start": "node listen.js"
+    "start": "node listen.js",
+    "seed-prod": "NODE_ENV=production md-seed run --dropdb"
   },
   "repository": {
     "type": "git",
@@ -19,14 +20,18 @@
   },
   "homepage": "https://github.com/Caitlin-B/be-project-pedals#readme",
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "body-parser": "^1.19.0",
     "command-line-commands": "^3.0.1",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.4",
     "mongoose-data-seed": "^2.1.6",
     "mongoose-geojson-schema": "^2.1.5",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "superagent-defaults": "^0.1.14"
   },
   "mdSeed": {
     "seedersFolder": "./db/seeds"

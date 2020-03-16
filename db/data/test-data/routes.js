@@ -1,4 +1,4 @@
-exports.testData = [
+module.exports = [
   {
     routeName: "Jess' Route",
     user_id: "jessjelly",

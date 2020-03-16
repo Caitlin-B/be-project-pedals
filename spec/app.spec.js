@@ -1,21 +1,82 @@
 process.env.NODE_ENV = "test";
 const chai = require("chai");
 const { expect } = require("chai");
-const request = require("supertest");
+const defaults = require("superagent-defaults");
 const app = require("../app");
+const request = defaults(require("supertest")(app));
 const samsChaiSorted = require("sams-chai-sorted");
 const mongoose = require("mongoose");
 
 chai.use(samsChaiSorted);
 
-// beforeEach(() => mongoose.seed.run());
+let route_id;
+let review_id;
+
+beforeEach(() => {
+  return request
+    .post("/api/login")
+    .send({ username: "jessjelly", password: "101112" })
+    .expect(200)
+    .then(({ body: { token } }) => {
+      request.set("Authorization", `BEARER ${token}`);
+    })
+    .then(() => {
+      return request.get("/api/routes").then(({ body: { routes } }) => {
+        route_id = routes[0]._id;
+      });
+    })
+    .then(() => {
+      const review = {
+        body: "Great route!",
+        user_id: "jessjelly",
+        rating: 5
+      };
+      return request
+        .post(`/api/reviews/${route_id}`)
+        .send(review)
+        .then(({ body: { review } }) => {
+          review_id = review._id;
+        });
+    });
+});
+
 after(() => mongoose.disconnect());
 
 describe("/api", () => {
+  describe("/login", () => {
+    it("POST 200: responds with access token when given correct username and password", () => {
+      return request
+        .post("/api/login")
+        .send({ username: "jessjelly", password: "101112" })
+        .expect(200)
+        .then(({ body }) => {
+          expect(body).to.have.ownProperty("token");
+        });
+    });
+    it("POST responds with status 401 for an incorrect password", () => {
+      return request
+        .post("/api/login")
+        .send({ username: "jessjelly", password: "wrongpassword" })
+        .expect(401)
+        .then(({ body: { msg } }) => {
+          expect(msg).to.equal("invalid password");
+        });
+    });
+    it("POST responds with status 401 for an incorrect username", () => {
+      return request
+        .post("/api/login")
+        .send({ username: "paul", password: "secure123" })
+        .expect(401)
+        .then(({ body: { msg } }) => {
+          expect(msg).to.equal("invalid username");
+        });
+    });
+  });
+
   describe("/routes", () => {
     describe("GET", () => {
       it("GET: returns status 200 and all routes", () => {
-        return request(app)
+        return request
           .get("/api/routes")
           .expect(200)
           .then(({ body }) => {
@@ -36,7 +97,7 @@ describe("/api", () => {
           });
       });
       it("GET: returns status 200 and all routes filtered by type", () => {
-        return request(app)
+        return request
           .get("/api/routes?type=scenic")
           .expect(200)
           .then(({ body }) => {
@@ -47,7 +108,7 @@ describe("/api", () => {
           });
       });
       it("GET: returns status 200 and all routes filtered by user_id", () => {
-        return request(app)
+        return request
           .get("/api/routes?user=jessjelly")
           .expect(200)
           .then(({ body }) => {
@@ -58,7 +119,7 @@ describe("/api", () => {
           });
       });
       it("GET: returns status 200 and all routes sorted by posted", () => {
-        return request(app)
+        return request
           .get("/api/routes?sort_by=posted")
           .expect(200)
           .then(({ body: { routes } }) => {
@@ -68,7 +129,7 @@ describe("/api", () => {
           });
       });
       it("GET: returns status 200 and all routes sorted by calculatedDistance", () => {
-        return request(app)
+        return request
           .get("/api/routes?sort_by=calculatedDistance")
           .expect(200)
           .then(({ body: { routes } }) => {
@@ -78,7 +139,7 @@ describe("/api", () => {
           });
       });
       it("GET: returns status 200 and all routes sorted by calculatedDistance", () => {
-        return request(app)
+        return request
           .get("/api/routes?sort_by=calculatedDistance")
           .expect(200)
           .then(({ body: { routes } }) => {
@@ -88,7 +149,7 @@ describe("/api", () => {
           });
       });
       it("GET: returns status 200 and all routes ordered ascending and sorted by calculatedDistance", () => {
-        return request(app)
+        return request
           .get("/api/routes?sort_by=calculatedDistance&&order=asc")
           .expect(200)
           .then(({ body: { routes } }) => {
@@ -98,7 +159,7 @@ describe("/api", () => {
           });
       });
       it("GET: returns status 200 and all routes sorted by average rating", () => {
-        return request(app)
+        return request
           .get("/api/routes?sort_by=averageRating&&order=asc")
           .expect(200)
           .then(({ body: { routes } }) => {
@@ -108,7 +169,7 @@ describe("/api", () => {
           });
       });
       it("GET: returns status 404 and a message stating that the queried column does not exist, when the type is invalid", () => {
-        return request(app)
+        return request
           .get("/api/routes?type=banana")
           .expect(404)
           .then(({ body }) => {
@@ -116,7 +177,7 @@ describe("/api", () => {
           });
       });
       it("GET: returns status 404 and a message stating that the queried column does not exist, when the user is invalid", () => {
-        return request(app)
+        return request
           .get("/api/routes?user=4567")
           .expect(404)
           .then(({ body }) => {
@@ -124,7 +185,7 @@ describe("/api", () => {
           });
       });
       it("GET: returns status 400 and an error message if the sort_by query is invalid", () => {
-        return request(app)
+        return request
           .get("/api/routes?sort_by=srhdt")
           .expect(400)
           .then(({ body }) => {
@@ -132,7 +193,7 @@ describe("/api", () => {
           });
       });
       it("GET: returns status 400 and and an error message, when the order query is invalid", () => {
-        return request(app)
+        return request
           .get("/api/routes?order=jdfegy")
           .expect(400)
           .then(({ body }) => {
@@ -187,7 +248,7 @@ describe("/api", () => {
             }
           ]
         };
-        return request(app)
+        return request
           .post("/api/routes")
           .send(route)
           .expect(201)
@@ -208,7 +269,7 @@ describe("/api", () => {
           });
       });
       it("POST: returns status 406 and an error message if nothing is sent on the request body", () => {
-        return request(app)
+        return request
           .post("/api/routes")
           .send({})
           .expect(406)
@@ -262,7 +323,7 @@ describe("/api", () => {
           ]
         };
 
-        return request(app)
+        return request
           .post("/api/routes")
           .send(route)
           .expect(406)
@@ -275,36 +336,29 @@ describe("/api", () => {
     describe("/:route_id", () => {
       describe("GET", () => {
         it("GET: returns status 200 and the requested route", () => {
-          return request(app)
-            .get("/api/routes")
-
+          return request
+            .get(`/api/routes/${route_id}`)
+            .expect(200)
             .then(({ body }) => {
-              const id = body.routes[0]._id;
-
-              return request(app)
-                .get(`/api/routes/${id}`)
-                .expect(200)
-                .then(({ body }) => {
-                  expect(body).to.have.key("route");
-                  expect(body.route._id).to.eql(id);
-                  expect(body.route).to.contain.keys(
-                    "features",
-                    "center",
-                    "zoom",
-                    "_id",
-                    "routeName",
-                    "user_id",
-                    "calculatedDistance",
-                    "posted",
-                    "type",
-                    "city",
-                    "averageRating"
-                  );
-                });
+              expect(body).to.have.key("route");
+              expect(body.route._id).to.eql(route_id);
+              expect(body.route).to.contain.keys(
+                "features",
+                "center",
+                "zoom",
+                "_id",
+                "routeName",
+                "user_id",
+                "calculatedDistance",
+                "posted",
+                "type",
+                "city",
+                "averageRating"
+              );
             });
         });
         it("GET: returns status 404 and an error message if the requested route does not exist", () => {
-          return request(app)
+          return request
             .get("/api/routes/bananasinpyjamas")
             .expect(404)
             .then(({ body }) => {
@@ -314,20 +368,15 @@ describe("/api", () => {
       });
       describe("DELETE", () => {
         it("DELETE: returns status 204 and no content", () => {
-          return request(app)
-            .get("/api/routes")
+          return request
+            .delete(`/api/routes/${route_id}`)
+            .expect(204)
             .then(({ body }) => {
-              const id = body.routes[0]._id;
-              return request(app)
-                .delete(`/api/routes/${id}`)
-                .expect(204)
-                .then(({ body }) => {
-                  expect(body).to.eql({});
-                });
+              expect(body).to.eql({});
             });
         });
         it("DELETE: returns status 404 and an error message when the route requested to be deleted does not exist", () => {
-          return request(app)
+          return request
             .delete("/api/routes/notaroute")
             .expect(404)
             .then(({ body }) => {
@@ -342,7 +391,7 @@ describe("/api", () => {
     describe("POST", () => {
       it("POST: returns status 201 and the created user", () => {
         const user = { _id: "tickle122", password: "myNewPassword" };
-        return request(app)
+        return request
           .post("/api/users")
           .send(user)
           .expect(201)
@@ -351,7 +400,7 @@ describe("/api", () => {
           });
       });
       it("POST: returns status 406 and an error message if nothing is sent on the request body", () => {
-        return request(app)
+        return request
           .post("/api/users")
           .send({})
           .expect(406)
@@ -361,7 +410,7 @@ describe("/api", () => {
       });
       it("POST: returns status 406 and an error message if required data is missing from the request body", () => {
         const user = { _id: "tickle122" };
-        return request(app)
+        return request
           .post("/api/users")
           .send(user)
           .expect(406)
@@ -373,7 +422,7 @@ describe("/api", () => {
     describe("/:user_id", () => {
       describe("GET", () => {
         it("GET: returns status 200 and the requested user", () => {
-          return request(app)
+          return request
             .get("/api/users/jessjelly")
             .expect(200)
             .then(({ body: { user } }) => {
@@ -382,7 +431,7 @@ describe("/api", () => {
             });
         });
         it("GET: returns status 404 and an error message when the requested user does not exist ", () => {
-          return request(app)
+          return request
             .get("/api/users/2475869")
             .expect(404)
             .then(({ body }) => {
@@ -392,15 +441,15 @@ describe("/api", () => {
       });
       describe("DELETE", () => {
         it("DELETE: returns status 204 and no content", () => {
-          return request(app)
-            .delete(`/api/users/jessjelly`)
+          return request
+            .delete(`/api/users/grumpy19`)
             .expect(204)
             .then(({ body }) => {
               expect(body).to.eql({});
             });
         });
-        it("DELETE: returns status 404 and an error message when the route requested to be deleted does not exist", () => {
-          return request(app)
+        it("DELETE: returns status 404 and an error message when the user requested to be deleted does not exist", () => {
+          return request
             .delete("/api/users/notauser")
             .expect(404)
             .then(({ body }) => {
@@ -415,18 +464,18 @@ describe("/api", () => {
     describe("/:route_id", () => {
       describe("GET", () => {
         it("GET: returns status 200 and a list of all the reviews for a specific route", () => {
-          return request(app)
-            .get("/api/reviews/5e68ffe0901eab60c9eeca40")
+          return request
+            .get(`/api/reviews/${route_id}`)
             .expect(200)
             .then(({ body: { reviews } }) => {
               const reviewsFromSameRoute = reviews.every(review => {
-                return review.route_id === "5e68ffe0901eab60c9eeca40";
+                return review.route_id === route_id;
               });
               expect(reviewsFromSameRoute).to.be.true;
             });
         });
         it("GET: returns status 404 and an error message when the requested route does not exist", () => {
-          return request(app)
+          return request
             .get("/api/reviews/notaroute")
             .expect(404)
             .then(({ body }) => {
@@ -442,96 +491,69 @@ describe("/api", () => {
             user_id: "jessjelly",
             rating: 5
           };
-          return request(app)
-            .get("/api/routes")
-            .then(({ body }) => {
-              const id = body.routes[0]._id;
-              return request(app)
-                .post(`/api/reviews/${id}`)
-                .send(review)
-                .expect(201)
-                .then(({ body: { review } }) => {
-                  expect(review).to.contain.keys(
-                    "user_id",
-                    "body",
-                    "rating",
-                    "posted",
-                    "route_id"
-                  );
-                });
+          return request
+            .post(`/api/reviews/${route_id}`)
+            .send(review)
+            .expect(201)
+            .then(({ body: { review } }) => {
+              expect(review).to.contain.keys(
+                "user_id",
+                "body",
+                "rating",
+                "posted",
+                "route_id"
+              );
             });
         });
         it("POST: returns status 406 and an error message if nothing is sent on the request body", () => {
-          return request(app)
-            .get("/api/routes")
-            .then(({ body }) => {
-              const id = body.routes[0]._id;
-              return request(app)
-                .post(`/api/reviews/${id}`)
-                .send({})
-                .expect(406);
-            });
+          return request
+            .post(`/api/reviews/${route_id}`)
+            .send({})
+            .expect(406);
         });
         it("POST: returns status 406 and an error message if a key is missing from the request body", () => {
           const review = { body: "This route was OK...", rating: 3 };
-          return request(app)
-            .get("/api/routes")
-            .then(({ body }) => {
-              const id = body.routes[0]._id;
-              return request(app)
-                .post(`/api/reviews/${id}`)
-                .send(review)
-                .expect(406);
-            });
+          return request
+            .post(`/api/reviews/${route_id}`)
+            .send(review)
+            .expect(406);
         });
       });
 
       describe("/:review_id", () => {
         describe("GET", () => {
           it("GET: returns status 200 and the specific route", () => {
-            return request(app)
-              .get("/api/routes")
-              .then(({ body }) => {
-                const route_id = body.routes[1]._id;
-                const review = {
-                  body: "jimmyjellywelly",
-                  user_id: "jessjelly",
-                  rating: 5
-                };
-                return request(app)
-                  .post(`/api/reviews/${route_id}`)
-                  .send(review)
-                  .then(({ body: { review } }) => {
-                    const review_id = review._id;
-                    return request(app)
-                      .get(`/api/reviews/${route_id}/${review_id}`)
-                      .expect(200)
-                      .then(({ body: { review } }) => {
-                        expect(review).to.contain.keys(
-                          "user_id",
-                          "body",
-                          "rating",
-                          "posted",
-                          "route_id"
-                        );
-                      });
-                  });
+            return request
+              .get(`/api/reviews/${route_id}/${review_id}`)
+              .expect(200)
+              .then(({ body: { review } }) => {
+                expect(review.route_id).to.equal(route_id);
+                expect(review).to.contain.keys(
+                  "user_id",
+                  "body",
+                  "rating",
+                  "posted",
+                  "route_id"
+                );
               });
           });
         });
+
         describe("DELETE", () => {
-          //need to test it works
+          it("DELETE: returns status 204 andd no content", () => {
+            return request
+              .delete(`/api/reviews/${route_id}/${review_id}`)
+              .expect(204)
+              .then(({ body }) => {
+                expect(body).to.eql({});
+              });
+          });
           // it("DELETE: returns returns status 404 and an error message when the route requested to be deleted does not exist", () => {
-          //   return request(app)
-          //     .get("/api/routes")
-          //     .then(({ body }) => {
-          //       const route_id = body.routes[1]._id;
-          //       return request(app)
-          //         .delete(`/api/reviews/${route_id}/banana`)
-          //         .expect(404)
-          //         .then(body => {
-          //           expect(body).to.eql({ msg: "hello" });
-          //         });
+          //   return request
+          //     .delete(`/api/reviews/${route_id}/banana`)
+          //     .expect(404)
+          //     .then(body => {
+          //       expect(body).to.eql({ msg: "hello" });
           //     });
           // });
         });

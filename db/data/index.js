@@ -8,6 +8,4 @@ const data = {
   production: devData
 };
 
-console.log(data);
-
 module.exports = data[ENV];
