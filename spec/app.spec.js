@@ -208,7 +208,8 @@ describe("/api", () => {
         const route = {
           routeName: "steph's route",
           user_id: "nickandsteph",
-          routeDescription: "A route for experience off-road cyclists, which I'd highly recommend.",
+          routeDescription:
+            "A route for experience off-road cyclists, which I'd highly recommend.",
           calculatedDistance: 100,
           center: [2, 4],
           zoom: [10],
@@ -283,7 +284,7 @@ describe("/api", () => {
       it("POST: returns status 406 and an error message if any key is missing from the request body", () => {
         const route = {
           routeName: "steph's route",
-          routeDescription: 'A new route for off-roaders.',
+          routeDescription: "A new route for off-roaders.",
           calculatedDistance: 100,
           center: [2, 4],
           zoom: [10],
@@ -534,14 +535,20 @@ describe("/api", () => {
           return request
             .post(`/api/reviews/${route_id}`)
             .send({})
-            .expect(406);
+            .expect(406)
+            .then(res => {
+              expect(res.body).to.eql({msg: 'Request Data Validation Failed'})
+            });
         });
         it("POST: returns status 406 and an error message if a key is missing from the request body", () => {
           const review = { body: "This route was OK...", rating: 3 };
           return request
             .post(`/api/reviews/${route_id}`)
             .send(review)
-            .expect(406);
+            .expect(406)
+            .then(res => {
+              expect(res.body).to.eql({ msg: "Request Data Validation Failed" });
+            });
         });
       });
 
@@ -573,14 +580,16 @@ describe("/api", () => {
                 expect(body).to.eql({});
               });
           });
-          // it("DELETE: returns returns status 404 and an error message when the route requested to be deleted does not exist", () => {
-          //   return request
-          //     .delete(`/api/reviews/${route_id}/banana`)
-          //     .expect(404)
-          //     .then(body => {
-          //       expect(body).to.eql({ msg: "hello" });
-          //     });
-          // });
+          it("DELETE: returns returns status 404 and an error message when the route of the requested to be deleted does not exist", () => {
+            return request
+              .delete(`/api/reviews/banana/${route_id}`)
+              .expect(404)
+              .then(res => {
+                expect(res.body).to.eql({
+                  msg: "Delete Failed - Review Not Found"
+                });
+              });
+          });
         });
       });
     });
