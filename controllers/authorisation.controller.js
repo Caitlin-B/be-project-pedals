@@ -1,7 +1,7 @@
 const User = require("../db/schemas/users.schema");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = process.env;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 exports.postLogin = (req, res, next) => {
   const { username, password } = req.body;
