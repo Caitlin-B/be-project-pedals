@@ -7,7 +7,7 @@ exports.addUser = body => {
 };
 
 exports.fetchUser = username => {
-  return User.findOne({ _id: username });
+  return User.findOne({ _id: username }).select('-password');
 };
 
 exports.removeUser = username => {
@@ -19,9 +19,9 @@ exports.addSavedRouteToUser = (username, savedRoute) => {
     { _id: username },
     { $push: { savedRoutes: savedRoute } },
     { new: true }
-  );
+  ).select('-password');
 };
 
 exports.fetchUsers = () => {
-  return User.find();
+  return User.find().select('-password');
 };

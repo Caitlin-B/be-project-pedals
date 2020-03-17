@@ -7,11 +7,17 @@ const {
 } = require("../models/users.model");
 
 exports.postUser = (req, res, next) => {
-  const { body } = req;
+  let { body } = req;
+
+  const bcrypt = require("bcrypt");
+  if (body.password) {
+    body.password = bcrypt.hashSync(body.password, 10);
+  }
 
   addUser(body)
     .then(user => {
-      return res.status(201).send({ user });
+      const { _id, __v, savedRoutes } = user;
+      return res.status(201).send({ user: { _id, __v, savedRoutes } });
     })
     .catch(next);
 };
@@ -27,7 +33,6 @@ exports.getUser = (req, res, next) => {
           msg: "Requested User Not Found"
         });
       }
-
       res.status(200).send({ user });
     })
     .catch(next);
