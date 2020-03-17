@@ -599,14 +599,6 @@ describe("/api", () => {
     });
   });
   describe("INVALID METHODS", () => {
-    // it.only("GET: returns status 405 and an error message when used on the /api/login route", () => {
-    //   return request
-    //     .get("/api/login")
-    //     .expect(405)
-    //     .then(({ body }) => {
-    //       expect(body).to.eql({ msg: "Method Not Allowed" });
-    //     });
-    // });
     it("PATCH: returns status 405 and an error message when used on the /api/routes route", () => {
       return request
         .patch("/api/routes")
@@ -615,14 +607,14 @@ describe("/api", () => {
           expect(body).to.eql({ msg: "Method Not Allowed" });
         });
     });
-     it("PUT: returns status 405 and an error message when used on the /api/routes route", () => {
-       return request
-         .put("/api/routes")
-         .expect(405)
-         .then(({ body }) => {
-           expect(body).to.eql({ msg: "Method Not Allowed" });
-         });
-     });
+    it("PUT: returns status 405 and an error message when used on the /api/routes route", () => {
+      return request
+        .put("/api/routes")
+        .expect(405)
+        .then(({ body }) => {
+          expect(body).to.eql({ msg: "Method Not Allowed" });
+        });
+    });
     it("PATCH: returns status 405 and an error message when used on the /api/routes route", () => {
       return request
         .patch(`/api/routes/${route_id}`)
@@ -631,14 +623,14 @@ describe("/api", () => {
           expect(body).to.eql({ msg: "Method Not Allowed" });
         });
     });
-     it("PUT: returns status 405 and an error message when used on the /api/routes route", () => {
-       return request
-         .put(`/api/routes/${route_id}`)
-         .expect(405)
-         .then(({ body }) => {
-           expect(body).to.eql({ msg: "Method Not Allowed" });
-         });
-     });
+    it("PUT: returns status 405 and an error message when used on the /api/routes route", () => {
+      return request
+        .put(`/api/routes/${route_id}`)
+        .expect(405)
+        .then(({ body }) => {
+          expect(body).to.eql({ msg: "Method Not Allowed" });
+        });
+    });
     it("DELETE: returns status 405 and an error message when used on the /api/users route", () => {
       return request
         .delete("/api/users")
@@ -655,14 +647,14 @@ describe("/api", () => {
           expect(body).to.eql({ msg: "Method Not Allowed" });
         });
     });
-      it("PUT: returns status 405 and an error message when used on the /api/users/:user_id route", () => {
-        return request
-          .put("/api/users/jessjelly")
-          .expect(405)
-          .then(({ body }) => {
-            expect(body).to.eql({ msg: "Method Not Allowed" });
-          });
-      });
+    it("PUT: returns status 405 and an error message when used on the /api/users/:user_id route", () => {
+      return request
+        .put("/api/users/jessjelly")
+        .expect(405)
+        .then(({ body }) => {
+          expect(body).to.eql({ msg: "Method Not Allowed" });
+        });
+    });
     it("PATCH: returns status 405 and an error message when used on the /api/reviews/:route_id route", () => {
       return request
         .patch(`/api/reviews/${route_id}`)
@@ -695,14 +687,14 @@ describe("/api", () => {
           expect(body).to.eql({ msg: "Method Not Allowed" });
         });
     });
-     it("PUT: returns status 405 and an error message when used on the /api/reviews/:route_id/:review_id route", () => {
-       return request
-         .put(`/api/reviews/${route_id}/${review_id}`)
-         .expect(405)
-         .then(({ body }) => {
-           expect(body).to.eql({ msg: "Method Not Allowed" });
-         });
-     });
+    it("PUT: returns status 405 and an error message when used on the /api/reviews/:route_id/:review_id route", () => {
+      return request
+        .put(`/api/reviews/${route_id}/${review_id}`)
+        .expect(405)
+        .then(({ body }) => {
+          expect(body).to.eql({ msg: "Method Not Allowed" });
+        });
+    });
     it("POST: returns status 405 and an error message when used on the /api/reviews/:route_id/:review_id route", () => {
       return request
         .post(`/api/reviews/${route_id}/${review_id}`)
