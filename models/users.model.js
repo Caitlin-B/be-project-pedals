@@ -21,3 +21,7 @@ exports.addSavedRouteToUser = (username, savedRoute) => {
     { new: true }
   );
 };
+
+exports.fetchUsers = () => {
+  return User.find();
+};

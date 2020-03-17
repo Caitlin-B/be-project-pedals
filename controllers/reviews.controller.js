@@ -46,8 +46,15 @@ exports.getReviewById = (req, res, next) => {
 
 exports.deleteReviewById = (req, res, next) => {
   const { route_id, review_id } = req.params;
+
   removeReviewById(review_id)
-    .then(() => {
+    .then(review => {
+      if (review.deletedCount === 0) {
+        return Promise.reject({
+          status: 404,
+          msg: "Delete Failed - Review Not Found"
+        });
+      }
       res.status(204).send();
     })
     .catch(next);
