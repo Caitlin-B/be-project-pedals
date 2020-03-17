@@ -141,6 +141,7 @@ module.exports = [
   {
     routeName: "tickle time",
     user_id: "tickle122",
+    routeDescription: "A lovely family route, one for everyone to enjoy.",
     calculatedDistance: 4,
     center: [2, 4],
     zoom: [10],
