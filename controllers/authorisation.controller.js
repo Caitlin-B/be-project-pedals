@@ -1,12 +1,12 @@
 const User = require("../db/schemas/users.schema");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const {JWT_SECRET} = require("../config");
+const { JWT_SECRET } = process.env;
 
 exports.postLogin = (req, res, next) => {
   const { username, password } = req.body;
   return User.findOne({ _id: username })
-    .then((user) => {
+    .then(user => {
       if (!user) {
         next({ status: 401, msg: "invalid username" });
       } else {

@@ -1,3 +1,4 @@
+require("dotenv").config();
 process.env.NODE_ENV = "test";
 const chai = require("chai");
 const { expect } = require("chai");
@@ -425,6 +426,18 @@ describe("/api", () => {
           });
       });
     });
+
+    describe("GET", () => {
+      it("GET: Returns status 200 and all the users", () => {
+        return request
+          .get("/api/users")
+          .expect(200)
+          .then(({ body: { users } }) => {
+            expect(users[0]).to.contain.keys("_id", "password", "savedRoutes");
+          });
+      });
+    });
+
     describe("/:user_id", () => {
       describe("GET", () => {
         it("GET: returns status 200 and the requested user", () => {
