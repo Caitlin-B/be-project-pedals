@@ -394,7 +394,7 @@ describe("/api", () => {
     });
   });
 
-  describe("/users", () => {
+  describe.only("/users", () => {
     describe("POST", () => {
       it("POST: returns status 201 and the created user", () => {
         const user = { _id: "tickle122", password: "myNewPassword" };
@@ -403,7 +403,7 @@ describe("/api", () => {
           .send(user)
           .expect(201)
           .then(({ body: { user } }) => {
-            expect(user).to.contain.keys("_id", "password", "savedRoutes");
+            expect(user).to.contain.keys("_id", "savedRoutes");
           });
       });
       it("POST: returns status 406 and an error message if nothing is sent on the request body", () => {
@@ -433,7 +433,7 @@ describe("/api", () => {
           .get("/api/users")
           .expect(200)
           .then(({ body: { users } }) => {
-            expect(users[0]).to.contain.keys("_id", "password", "savedRoutes");
+            expect(users[0]).to.contain.keys("_id",  "savedRoutes");
           });
       });
     });
@@ -445,7 +445,7 @@ describe("/api", () => {
             .get("/api/users/jessjelly")
             .expect(200)
             .then(({ body: { user } }) => {
-              expect(user).to.contain.keys("_id", "password", "savedRoutes");
+              expect(user).to.contain.keys("_id", "savedRoutes");
               expect(user._id).to.eql("jessjelly");
             });
         });
