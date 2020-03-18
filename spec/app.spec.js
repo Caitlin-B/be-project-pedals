@@ -12,6 +12,7 @@ chai.use(samsChaiSorted);
 
 let route_id;
 let review_id;
+let savedRoute;
 
 beforeEach(() => {
   return request
@@ -23,6 +24,7 @@ beforeEach(() => {
     })
     .then(() => {
       return request.get("/api/routes").then(({ body: { routes } }) => {
+        savedRoute = routes[0];
         route_id = routes[0]._id;
       });
     })
@@ -394,7 +396,7 @@ describe("/api", () => {
     });
   });
 
-  describe.only("/users", () => {
+  describe("/users", () => {
     describe("POST", () => {
       it("POST: returns status 201 and the created user", () => {
         const user = { _id: "tickle122", password: "myNewPassword" };
@@ -433,7 +435,7 @@ describe("/api", () => {
           .get("/api/users")
           .expect(200)
           .then(({ body: { users } }) => {
-            expect(users[0]).to.contain.keys("_id",  "savedRoutes");
+            expect(users[0]).to.contain.keys("_id", "savedRoutes");
           });
       });
     });
@@ -462,10 +464,24 @@ describe("/api", () => {
         it("PATCH: returns status 200 and will update the saved routes property on the user, to include the patched route_id", () => {
           return request
             .patch("/api/users/jessjelly")
-            .send({ savedRoute: route_id })
+            .send({ savedRoute: savedRoute })
             .expect(200)
             .then(({ body }) => {
-              expect(body.user.savedRoutes[0]).to.eql(route_id);
+              expect(body.user.savedRoutes[0]._id).to.equal(route_id);
+              expect(body.user.savedRoutes[0]).to.contain.keys(
+                "features",
+                "center",
+                "zoom",
+                "_id",
+                "routeName",
+                "user_id",
+                "calculatedDistance",
+                "posted",
+                "type",
+                "city",
+                "averageRating",
+                "routeDescription"
+              );
             });
         });
         it("PATCH: returns status 400 and an error message if savedRoute is not included on the request body", () => {
