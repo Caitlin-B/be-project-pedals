@@ -9,7 +9,7 @@ exports.addRoute = body => {
 exports.fetchAllRoutes = (
   type,
   user_id,
-  sort_by = "averageRating",
+  sort_by = "posted",
   order = "desc"
 ) => {
   const query = {};
