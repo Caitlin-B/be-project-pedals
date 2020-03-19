@@ -23,13 +23,18 @@ exports.postReviewByRouteId = (req, res, next) => {
 
 exports.getReviewsByRouteId = (req, res, next) => {
   const { route_id } = req.params;
+  const promises = [
+    fetchReviewsByRouteId(route_id),
+    checkRouteExists(route_id)
+  ];
 
-  fetchReviewsByRouteId(route_id)
-    .then(reviews => {
-      if (reviews.length === 0) {
+  return Promise.all(promises)
+    .then(([reviews, routeExists]) => {
+      if (!reviews.length && !routeExists) {
         return Promise.reject({ status: 404, msg: "Reviews Not Found" });
+      } else {
+        res.status(200).send({ reviews });
       }
-      res.status(200).send({ reviews });
     })
     .catch(next);
 };
@@ -58,4 +63,14 @@ exports.deleteReviewById = (req, res, next) => {
       res.status(204).send();
     })
     .catch(next);
+};
+
+const checkRouteExists = route_id => {
+  return fetchRouteById(route_id)
+    .then(() => {
+      return true;
+    })
+    .catch(() => {
+      return false;
+    });
 };

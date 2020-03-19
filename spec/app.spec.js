@@ -13,6 +13,7 @@ chai.use(samsChaiSorted);
 let route_id;
 let review_id;
 let savedRoute;
+let unreviewedRoute_id;
 
 beforeEach(() => {
   return request
@@ -26,6 +27,7 @@ beforeEach(() => {
       return request.get("/api/routes").then(({ body: { routes } }) => {
         savedRoute = routes[0];
         route_id = routes[0]._id;
+        unreviewedRoute_id = routes[1]._id;
       });
     })
     .then(() => {
@@ -120,6 +122,16 @@ describe("/api", () => {
               return route.user_id === "jessjelly";
             });
             expect(userIsJessJelly).to.be.true;
+          });
+      });
+      it("GET: returns status 200 and all routes sorted by posted and order descending as default", () => {
+        return request
+          .get("/api/routes")
+          .expect(200)
+          .then(({ body: { routes } }) => {
+            expect(routes).to.be.sortedBy("posted", {
+              descending: true
+            });
           });
       });
       it("GET: returns status 200 and all routes sorted by posted", () => {
@@ -535,6 +547,14 @@ describe("/api", () => {
             .expect(404)
             .then(({ body }) => {
               expect(body).to.eql({ msg: "Reviews Not Found" });
+            });
+        });
+        it("GET: returns status 200 and an empty array when passed a route that exists but has no reviews", () => {
+          return request
+            .get(`/api/reviews/${unreviewedRoute_id}`)
+            .expect(200)
+            .then(({ body: { reviews } }) => {
+              expect(reviews).to.eql([]);
             });
         });
       });
