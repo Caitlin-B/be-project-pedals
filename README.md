@@ -9,9 +9,8 @@ The Pedals API. All the data you need setup your very own unoptimised cycle rout
 In your terminal type the following commands:
 
 ```bash
-git clone YOUR-CLONED-REPO-URL
+git clone https://github.com/Caitlin-B/be-project-pedals
 
-cd be-project-pedals
 ```
 
 ## Prerequisites
@@ -21,6 +20,10 @@ cd be-project-pedals
 If you don't have npm see this link on how to install it: https://www.npmjs.com/get-npm
 
 **You will need Node version v13.0.1 or later to use this API**
+
+**You will also need MongoDB v4.2.3 or later to run the database**
+
+Follow this link to install MongoDB https://docs.mongodb.com/guides/server/install/
 
 ## Installing
 
